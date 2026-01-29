@@ -1,5 +1,5 @@
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "https://cgpa-analyzer-gr3n.onrender.com";
+  import.meta.env.VITE_API_URL || "https://cgpa-analyzer-mq5f.onrender.com";
 
 const apiClient = async (url, options = {}) => {
   // Prepend base URL if the URL is relative
