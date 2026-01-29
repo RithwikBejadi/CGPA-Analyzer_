@@ -1,67 +1,72 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "https://cgpa-analyzer-mq5f.onrender.com";
 
 const Login = () => {
   const navigate = useNavigate();
   const { login, isAuthenticated, loading: authLoading } = useAuth();
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   // Redirect if already logged in
   useEffect(() => {
     if (!authLoading && isAuthenticated) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
   }, [isAuthenticated, authLoading, navigate]);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-    setError('');
+    setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
-    
+
     try {
       const result = await login(formData.email, formData.password, rememberMe);
-      
+
       if (!result.success) {
-        setError(result.error || 'Login failed. Please check your credentials.');
+        setError(
+          result.error || "Login failed. Please check your credentials.",
+        );
         setLoading(false);
         return;
       }
-      
-      console.log('Login successful! Redirecting to dashboard...');
-      navigate('/dashboard');
+
+      console.log("Login successful! Redirecting to dashboard...");
+      navigate("/dashboard");
     } catch (err) {
-      console.error('Network error during login', err);
-      setError('Network error. Please try again.');
+      console.error("Network error during login", err);
+      setError("Network error. Please try again.");
       setLoading(false);
     }
   };
 
   const handleSocialLogin = (provider) => {
-    if (provider === 'Google') {
-      window.location.href = '/api/auth/google';
-    } else if (provider === 'GitHub') {
-      setError('GitHub authentication is not yet configured');
+    if (provider === "Google") {
+      window.location.href = `${API_BASE_URL}/api/auth/google`;
+    } else if (provider === "GitHub") {
+      setError("GitHub authentication is not yet configured");
     }
   };
 
   const handleForgotPassword = () => {
-    alert('Forgot password feature will be implemented');
+    alert("Forgot password feature will be implemented");
   };
 
   return (
@@ -75,8 +80,11 @@ const Login = () => {
               </span>
             </Link>
             <div className="text-sm text-gray-600">
-              Don't have an account?{' '}
-              <Link to="/signup" className="font-medium text-gray-900 hover:text-gray-600 transition-colors">
+              Don't have an account?{" "}
+              <Link
+                to="/signup"
+                className="font-medium text-gray-900 hover:text-gray-600 transition-colors"
+              >
                 Sign up
               </Link>
             </div>
@@ -89,8 +97,12 @@ const Login = () => {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center w-full">
             <div className="hidden lg:block space-y-8 w-full">
               <div className="space-y-4">
-                <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">Welcome back</h1>
-                <p className="text-lg lg:text-xl text-gray-600">Sign in to continue tracking your academic performance.</p>
+                <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">
+                  Welcome back
+                </h1>
+                <p className="text-lg lg:text-xl text-gray-600">
+                  Sign in to continue tracking your academic performance.
+                </p>
               </div>
             </div>
 
@@ -98,8 +110,12 @@ const Login = () => {
               <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 p-6 sm:p-8 lg:p-12 w-full">
                 <div className="space-y-6 sm:space-y-8 w-full">
                   <div className="text-center lg:text-left space-y-2">
-                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">Sign in</h2>
-                    <p className="text-gray-600 text-sm sm:text-base">Enter your credentials to access your account</p>
+                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
+                      Sign in
+                    </h2>
+                    <p className="text-gray-600 text-sm sm:text-base">
+                      Enter your credentials to access your account
+                    </p>
                   </div>
 
                   <form onSubmit={handleSubmit} className="space-y-6">
@@ -110,7 +126,12 @@ const Login = () => {
                     )}
 
                     <div className="space-y-2">
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-900">Email address</label>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium text-gray-900"
+                      >
+                        Email address
+                      </label>
                       <input
                         id="email"
                         name="email"
@@ -125,8 +146,13 @@ const Login = () => {
 
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-900">Password</label>
-                        <Link 
+                        <label
+                          htmlFor="password"
+                          className="block text-sm font-medium text-gray-900"
+                        >
+                          Password
+                        </label>
+                        <Link
                           to="/forgot-password"
                           className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
                         >
@@ -137,7 +163,7 @@ const Login = () => {
                         <input
                           id="password"
                           name="password"
-                          type={showPassword ? 'text' : 'password'}
+                          type={showPassword ? "text" : "password"}
                           value={formData.password}
                           onChange={handleChange}
                           placeholder="Enter your password"
@@ -149,7 +175,7 @@ const Login = () => {
                           onClick={() => setShowPassword(!showPassword)}
                           className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
                         >
-                          {showPassword ? '👁️' : '👁️‍🗨️'}
+                          {showPassword ? "👁️" : "👁️‍🗨️"}
                         </button>
                       </div>
                     </div>
@@ -163,17 +189,20 @@ const Login = () => {
                         onChange={(e) => setRememberMe(e.target.checked)}
                         className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer"
                       />
-                      <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700 cursor-pointer">
+                      <label
+                        htmlFor="remember-me"
+                        className="ml-2 block text-sm text-gray-700 cursor-pointer"
+                      >
                         Remember me for 30 days
                       </label>
                     </div>
 
-                    <button 
-                      type="submit" 
+                    <button
+                      type="submit"
                       disabled={loading}
                       className="w-full bg-gray-900 text-white py-3.5 rounded-xl font-medium hover:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
-                      {loading ? 'Signing in...' : 'Sign in'}
+                      {loading ? "Signing in..." : "Sign in"}
                     </button>
                   </form>
 
@@ -182,32 +211,41 @@ const Login = () => {
                       <div className="w-full border-t border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center text-sm">
-                      <span className="px-4 bg-white text-gray-500">Or continue with</span>
+                      <span className="px-4 bg-white text-gray-500">
+                        Or continue with
+                      </span>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <button
                       type="button"
-                      onClick={() => handleSocialLogin('Google')}
+                      onClick={() => handleSocialLogin("Google")}
                       className="flex items-center justify-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
                     >
-                      <span className="text-sm font-medium text-gray-700">Google</span>
+                      <span className="text-sm font-medium text-gray-700">
+                        Google
+                      </span>
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleSocialLogin('GitHub')}
+                      onClick={() => handleSocialLogin("GitHub")}
                       className="flex items-center justify-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
                     >
-                      <span className="text-sm font-medium text-gray-700">GitHub</span>
+                      <span className="text-sm font-medium text-gray-700">
+                        GitHub
+                      </span>
                     </button>
                   </div>
                 </div>
               </div>
 
               <p className="text-center text-sm text-gray-600 mt-6 lg:hidden">
-                Don't have an account?{' '}
-                <Link to="/signup" className="font-medium text-gray-900 hover:text-gray-600 transition-colors">
+                Don't have an account?{" "}
+                <Link
+                  to="/signup"
+                  className="font-medium text-gray-900 hover:text-gray-600 transition-colors"
+                >
                   Sign up
                 </Link>
               </p>
