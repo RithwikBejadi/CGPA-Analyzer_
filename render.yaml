@@ -7,20 +7,20 @@ services:
     plan: free
     branch: main
     rootDir: server
-    buildCommand: npm run build
+    buildCommand: npm install && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-        sync: false  # Set manually in dashboard
+        sync: false # Set manually in dashboard
       - key: JWT_SECRET
-        sync: false  # Set manually in dashboard
+        sync: false # Set manually in dashboard
       - key: CLIENT_URL
-        sync: false  # Set manually in dashboard
+        sync: false # Set manually in dashboard
       - key: GOOGLE_CLIENT_ID
-        sync: false  # Set manually in dashboard (optional)
+        sync: false # Set manually in dashboard (optional)
       - key: GOOGLE_CLIENT_SECRET
-        sync: false  # Set manually in dashboard (optional)
+        sync: false # Set manually in dashboard (optional)
       - key: GOOGLE_CALLBACK_URL
-        sync: false  # Set manually in dashboard (optional)
+        sync: false # Set manually in dashboard (optional)
