@@ -16,18 +16,31 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [serverStarting, setServerStarting] = useState(false);
   const navigate = useNavigate();
 
   const checkAuth = async () => {
+    const startTime = Date.now();
+    let serverStartTimeout;
+    
+    // If request takes more than 3 seconds, assume server is starting up
+    serverStartTimeout = setTimeout(() => {
+      setServerStarting(true);
+    }, 3000);
+
     try {
       const response = await axios.get('/api/users/me', { 
         skipAuthRedirect: true 
       });
 
+      clearTimeout(serverStartTimeout);
+      setServerStarting(false);
       setUser(response.data);
       setIsAuthenticated(true);
       localStorage.setItem('isAuthenticated', 'true');
     } catch (error) {
+      clearTimeout(serverStartTimeout);
+      setServerStarting(false);
       console.error('Auth check failed:', error);
       setUser(null);
       setIsAuthenticated(false);
@@ -119,6 +132,7 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     isAuthenticated,
+    serverStarting,
     login,
     logout,
     signup,

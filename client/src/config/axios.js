@@ -7,6 +7,7 @@ const API_BASE_URL =
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
+  timeout: 90000, // 90 seconds to account for server cold starts
   headers: {
     "Content-Type": "application/json",
   },
