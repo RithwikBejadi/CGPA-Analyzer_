@@ -518,11 +518,11 @@ This document presents the performance comparison between our **optimized Prisma
 
 runTests()
   .then(() => {
-    console.log("✨ All tests completed successfully!");
+    console.log("All tests completed successfully!");
     process.exit(0);
   })
   .catch((error) => {
-    console.error("❌ Error running tests:", error);
+    console.error("Error running tests:", error);
     process.exit(1);
   })
   .finally(async () => {

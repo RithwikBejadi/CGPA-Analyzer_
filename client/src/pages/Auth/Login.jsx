@@ -60,8 +60,6 @@ const Login = () => {
   const handleSocialLogin = (provider) => {
     if (provider === "Google") {
       window.location.href = `${API_BASE_URL}/api/auth/google`;
-    } else if (provider === "GitHub") {
-      setError("GitHub authentication is not yet configured");
     }
   };
 
@@ -217,26 +215,15 @@ const Login = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <button
-                      type="button"
-                      onClick={() => handleSocialLogin("Google")}
-                      className="flex items-center justify-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
-                    >
-                      <span className="text-sm font-medium text-gray-700">
-                        Google
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleSocialLogin("GitHub")}
-                      className="flex items-center justify-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
-                    >
-                      <span className="text-sm font-medium text-gray-700">
-                        GitHub
-                      </span>
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleSocialLogin("Google")}
+                    className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+                  >
+                    <span className="text-sm font-medium text-gray-700">
+                      Google
+                    </span>
+                  </button>
                 </div>
               </div>
 
