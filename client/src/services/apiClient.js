@@ -1,5 +1,5 @@
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "https://cgpa-analyzer-mq5f.onrender.com";
+// Same rationale as axios.js: default to "" so requests go through the Vercel proxy.
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 
 const apiClient = async (url, options = {}) => {
   // Prepend base URL if the URL is relative

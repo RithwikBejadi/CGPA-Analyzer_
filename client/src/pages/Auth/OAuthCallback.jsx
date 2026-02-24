@@ -1,11 +1,12 @@
 import { useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import apiClient from "../../services/apiClient";
-
+import { useAuth } from "../../contexts/AuthContext";
 
 const OAuthCallback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { checkAuth } = useAuth();
   const called = useRef(false);
 
   useEffect(() => {
@@ -28,6 +29,7 @@ const OAuthCallback = () => {
         });
 
         if (response.ok) {
+          await checkAuth();
           navigate("/dashboard", { replace: true });
         } else {
           navigate("/login?error=oauth_failed", { replace: true });
@@ -38,7 +40,7 @@ const OAuthCallback = () => {
     };
 
     exchangeCode();
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, checkAuth]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-navy-950 flex items-center justify-center">

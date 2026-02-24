@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "https://cgpa-analyzer-mq5f.onrender.com";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 
 // Create axios instance with default config
 const axiosInstance = axios.create({

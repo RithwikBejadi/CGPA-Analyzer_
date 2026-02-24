@@ -3,9 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import axios from "../../config/axios";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "https://cgpa-analyzer-mq5f.onrender.com";
-
 const Signup = () => {
   const navigate = useNavigate();
   const { login, isAuthenticated, loading: authLoading } = useAuth();
@@ -156,7 +153,8 @@ const Signup = () => {
 
   const handleSocialSignup = (provider) => {
     if (provider === "Google") {
-      window.location.href = `${API_BASE_URL}/api/auth/google`;
+      // Relative URL → goes through Vercel proxy → same-site cookie, no Chrome restrictions
+      window.location.href = "/api/auth/google";
     }
   };
 
