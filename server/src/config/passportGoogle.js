@@ -21,7 +21,6 @@ export default function setupGooglePassport() {
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
         callbackURL: CALLBACK_URL,
-        prompt: 'select_account', 
       },
       async (accessToken, refreshToken, profile, done) => {
         try {

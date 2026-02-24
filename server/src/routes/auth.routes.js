@@ -23,7 +23,8 @@ authRouter.get("/google", (req, res, next) => {
         .json({ error: "Google OAuth not configured on server" });
     return passport.authenticate("google", {
       scope: ["profile", "email"],
-      prompt: "select_account", // Always show account selection
+      prompt: "select_account",
+      state: false,
     })(req, res, next);
   } catch (err) {
     console.error("Error starting Google auth flow", err);
@@ -45,6 +46,7 @@ authRouter.get(
         );
       return passport.authenticate("google", {
         session: false,
+        state: false,
         failureRedirect:
           process.env.CLIENT_URL || "https://cgpa-analyzer.vercel.app",
       })(req, res, next);
