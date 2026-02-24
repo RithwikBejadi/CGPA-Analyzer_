@@ -1,11 +1,43 @@
 import express from "express";
 import passport from "passport";
+import crypto from "crypto";
 import {
   createUser,
   loginUser,
   logoutUser,
 } from "../controllers/auth.controller.js";
 const authRouter = express.Router();
+
+// Short-lived one-time codes for OAuth token exchange
+// This avoids setting cookies during cross-site redirects (blocked by Chrome)
+const oauthCodes = new Map(); // code -> { payload, expiresAt }
+
+const OAUTH_CODE_TTL_MS = 60 * 1000; // 1 minute
+
+// Clean up expired codes periodically
+setInterval(() => {
+  const now = Date.now();
+  for (const [code, value] of oauthCodes) {
+    if (value.expiresAt < now) oauthCodes.delete(code);
+  }
+}, 30 * 1000);
+
+authRouter.post("/exchange-code", async (req, res) => {
+  const { code } = req.body;
+  if (!code) return res.status(400).json({ error: "Code is required" });
+
+  const entry = oauthCodes.get(code);
+  if (!entry || entry.expiresAt < Date.now()) {
+    oauthCodes.delete(code);
+    return res.status(401).json({ error: "Invalid or expired code" });
+  }
+
+  oauthCodes.delete(code); // one-time use
+
+  const { generateToken } = await import("../utils/generateToken.js");
+  generateToken(res, entry.payload);
+  return res.status(200).json({ ok: true });
+});
 
 authRouter.post("/register", createUser);
 authRouter.post("/login", loginUser);
@@ -60,12 +92,14 @@ authRouter.get(
   async (req, res) => {
     try {
       const payload = req.user || {};
-      const { generateToken } = await import("../utils/generateToken.js");
-      generateToken(res, payload);
-      const redirectTo = `${
-        process.env.CLIENT_URL || "https://cgpa-analyzer.vercel.app"
-      }/dashboard`;
-      return res.redirect(redirectTo);
+      // Generate a short-lived one-time code instead of setting cookie directly.
+      // Cookies set during cross-site redirects (OAuth flow) are blocked by Chrome.
+      // The client will exchange this code for a cookie via a direct fetch().
+      const code = crypto.randomBytes(32).toString("hex");
+      oauthCodes.set(code, { payload, expiresAt: Date.now() + OAUTH_CODE_TTL_MS });
+
+      const clientUrl = process.env.CLIENT_URL || "https://cgpa-analyzer.vercel.app";
+      return res.redirect(`${clientUrl}/auth/callback?code=${code}`);
     } catch (err) {
       console.error("OAuth callback error", err);
       return res.redirect(

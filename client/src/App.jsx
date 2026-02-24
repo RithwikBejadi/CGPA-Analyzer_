@@ -6,6 +6,7 @@ import Login from './pages/Auth/Login.jsx'
 import Signup from './pages/Auth/Signup.jsx'
 import ForgotPassword from './pages/Auth/ForgotPassword.jsx'
 import ResetPassword from './pages/Auth/ResetPassword.jsx'
+import OAuthCallback from './pages/Auth/OAuthCallback.jsx'
 import DashboardNew from './pages/Dashboard/DashboardNew.jsx'
 import ProfileSetup from './pages/Auth/ProfileSetup.jsx'
 import SemesterView from './pages/Semester/SemesterView.jsx'
@@ -34,6 +35,7 @@ function App() {
           <Route path="/landing" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/auth/callback" element={<OAuthCallback />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route 
