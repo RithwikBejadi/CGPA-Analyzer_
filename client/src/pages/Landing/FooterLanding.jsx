@@ -5,7 +5,7 @@ const FooterLanding = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className='bg-gray-900 dark:bg-black text-white w-full transition-colors duration-200'>
+    <footer className='bg-gray-900 text-white w-full transition-colors duration-200'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 w-full'>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12 mb-8 sm:mb-12'>
           <div className='text-center sm:text-left'>

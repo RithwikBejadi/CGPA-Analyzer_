@@ -94,26 +94,26 @@ const CompleteProfile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-navy-900 flex items-center justify-center px-4 py-8 sm:py-12 w-full transition-colors duration-200">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8 sm:py-12 w-full transition-colors duration-200">
       <div className="w-full max-w-md mx-auto">
-        <div className="bg-white dark:bg-navy-800 rounded-xl shadow-lg p-6 sm:p-8 border border-transparent dark:border-navy-700">
+        <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 border border-transparent">
           <div className="flex flex-col sm:flex-row items-center justify-center mb-6 gap-3">
             <img src={Logo} alt="CGPA Calculator" className="h-10 w-10 sm:h-12 sm:w-12" />
-            <h1 className="text-xl sm:text-2xl font-semibold text-center text-gray-900 dark:text-white">Complete your profile</h1>
+            <h1 className="text-xl sm:text-2xl font-semibold text-center text-gray-900">Complete your profile</h1>
           </div>
 
-          {error && <div className="text-red-600 dark:text-red-400 text-sm mb-4 text-center bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-2">{error}</div>}
+          {error && <div className="text-red-600 text-sm mb-4 text-center bg-red-50/20 border border-red-200 rounded-lg p-2">{error}</div>}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">College</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">College</label>
               {!showAddCollege ? (
                 <div className="space-y-2">
                   <select 
                     value={selected} 
                     onChange={e => setSelected(e.target.value)} 
                     required 
-                    className="w-full px-4 py-2.5 border border-gray-300 dark:border-navy-700 rounded-lg text-sm sm:text-base bg-white dark:bg-navy-900 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm sm:text-base bg-white text-gray-900"
                   >
                     <option value="">Select your college</option>
                     {colleges.map(c => (
@@ -123,7 +123,7 @@ const CompleteProfile = () => {
                   <button
                     type="button"
                     onClick={() => setShowAddCollege(true)}
-                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium mt-1 block"
+                    className="text-sm text-gray-600 hover:text-gray-900:text-white font-medium mt-1 block"
                   >
                     Can't find your college? Add it here
                   </button>
@@ -136,13 +136,13 @@ const CompleteProfile = () => {
                       value={newCollegeName}
                       onChange={(e) => setNewCollegeName(e.target.value)}
                       placeholder="Enter college name"
-                      className="flex-1 px-4 py-2.5 border border-gray-300 dark:border-navy-700 rounded-lg text-sm sm:text-base bg-white dark:bg-navy-900 text-gray-900 dark:text-white"
+                      className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-sm sm:text-base bg-white text-gray-900"
                     />
                     <button
                       type="button"
                       onClick={handleAddCollege}
                       disabled={loading}
-                      className="px-4 py-2.5 bg-white dark:bg-white text-black dark:text-black rounded-lg text-sm sm:text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-200 transition disabled:opacity-50"
+                      className="px-4 py-2.5 bg-white text-black rounded-lg text-sm sm:text-base font-medium hover:bg-gray-100:bg-gray-200 transition disabled:opacity-50"
                     >
                       {loading ? 'Adding...' : 'Add'}
                     </button>
@@ -153,7 +153,7 @@ const CompleteProfile = () => {
                       setShowAddCollege(false);
                       setNewCollegeName('');
                     }}
-                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium"
+                    className="text-sm text-gray-600 hover:text-gray-900:text-white font-medium"
                   >
                     ← Back to college selection
                   </button>
@@ -161,7 +161,7 @@ const CompleteProfile = () => {
               )}
             </div>
 
-            <button type="submit" disabled={loading} className="w-full bg-white dark:bg-white text-black dark:text-black py-2.5 rounded-lg text-sm sm:text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-200 transition disabled:opacity-50">
+            <button type="submit" disabled={loading} className="w-full bg-white text-black py-2.5 rounded-lg text-sm sm:text-base font-medium hover:bg-gray-100:bg-gray-200 transition disabled:opacity-50">
               {loading ? 'Saving...' : 'Save and continue'}
             </button>
           </form>

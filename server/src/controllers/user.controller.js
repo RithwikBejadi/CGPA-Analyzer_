@@ -1,5 +1,71 @@
 import prisma from "../../db.config.js";
 
+export const updateUser = async (req, res) => {
+  try {
+    if (!req.user || !req.user.email) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const email = req.user.email;
+    const { username, collegeId } = req.body;
+
+    if (!username || !username.trim()) {
+      return res.status(400).json({ error: "Username is required." });
+    }
+
+    const trimmed = username.trim().toLowerCase();
+    const usernameRegex = /^(?=.{3,30}$)(?!.*[.]{2})[a-zA-Z0-9]+(?:[._-][a-zA-Z0-9]+)*$/;
+    if (!usernameRegex.test(trimmed)) {
+      return res.status(400).json({ error: "Invalid username format. Use 3–30 alphanumeric characters." });
+    }
+
+    const existing = await prisma.user.findFirst({ where: { username: trimmed } });
+    if (existing && existing.email !== email) {
+      return res.status(409).json({ error: "Username is already taken." });
+    }
+
+    const updateData = { username: trimmed };
+
+    if (collegeId) {
+      const college = await prisma.college.findUnique({ where: { id: BigInt(collegeId) } }).catch(() => null);
+      if (!college) {
+        return res.status(400).json({ error: "Invalid university selected." });
+      }
+      updateData.collegeId = BigInt(collegeId);
+    }
+
+    const updated = await prisma.user.update({
+      where: { email },
+      data: updateData,
+      select: {
+        username: true,
+        email: true,
+        collegeId: true,
+        college: { select: { id: true, name: true } },
+        profileCompleted: true,
+        bio: true,
+        university: true,
+        graduationYear: true,
+      },
+    });
+
+    return res.json({
+      username: updated.username,
+      email: updated.email,
+      collegeId: updated.collegeId ? updated.collegeId.toString() : null,
+      college: updated.college ? { id: updated.college.id.toString(), name: updated.college.name } : null,
+      profileCompleted: updated.profileCompleted,
+      bio: updated.bio,
+      university: updated.university,
+      graduationYear: updated.graduationYear,
+    });
+  } catch (err) {
+    console.error("Error updating user:", err.message);
+    return res.status(500).json({ error: "Server error" });
+  }
+};
+
+
 export const getUser = async (req, res) => {
   try {
     if (!req.user || !req.user.email) {
@@ -65,7 +131,16 @@ export const updateUserCollege = async (req, res) => {
     const updated = await prisma.user.update({
       where: { email },
       data: { collegeId: BigInt(collegeId) },
-      select: { username: true, email: true, collegeId: true, college: { select: { id: true, name: true } } },
+      select: { 
+        username: true, 
+        email: true, 
+        collegeId: true, 
+        college: { select: { id: true, name: true } },
+        profileCompleted: true,
+        bio: true,
+        university: true,
+        graduationYear: true,
+      },
     });
 
     const formatted = {
@@ -73,6 +148,10 @@ export const updateUserCollege = async (req, res) => {
       email: updated.email,
       collegeId: updated.collegeId ? updated.collegeId.toString() : null,
       college: updated.college ? { id: updated.college.id.toString(), name: updated.college.name } : null,
+      profileCompleted: updated.profileCompleted,
+      bio: updated.bio,
+      university: updated.university,
+      graduationYear: updated.graduationYear,
     };
 
     return res.json({ user: formatted });

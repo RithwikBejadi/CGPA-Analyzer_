@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FiMoon, FiSun, FiLock, FiTrash2, FiShield, FiMail } from 'react-icons/fi';
+import { FiSun, FiBell, FiTrash2, FiShield, FiMail } from 'react-icons/fi';
 import { useAuth } from '../../contexts/AuthContext';
 import Modal from '../../components/ui/Modal';
 import Input from '../../components/ui/Input';
@@ -15,7 +15,6 @@ const Settings = () => {
   const changePasswordModal = useModal();
   
   const [settings, setSettings] = useState({
-    theme: 'light',
     emailNotifications: true,
     pushNotifications: false,
     twoFactor: false
@@ -265,29 +264,10 @@ const Settings = () => {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-sm font-medium text-gray-900">Theme</h3>
-              <p className="text-xs text-gray-500 mt-1">Select your preferred interface theme</p>
+              <p className="text-xs text-gray-500 mt-1">This application uses a clean light theme</p>
             </div>
-            <div className="flex bg-gray-100 p-1 rounded-lg">
-              <button
-                onClick={() => setSettings(prev => ({ ...prev, theme: 'light' }))}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
-                  settings.theme === 'light'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-500 hover:text-gray-900'
-                }`}
-              >
-                <FiSun className="w-4 h-4" /> Light
-              </button>
-              <button
-                onClick={() => setSettings(prev => ({ ...prev, theme: 'dark' }))}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
-                  settings.theme === 'dark'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-500 hover:text-gray-900'
-                }`}
-              >
-                <FiMoon className="w-4 h-4" /> Dark
-              </button>
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-lg text-sm font-medium text-gray-700">
+              <FiSun className="w-4 h-4" /> Light
             </div>
           </div>
         </Section>

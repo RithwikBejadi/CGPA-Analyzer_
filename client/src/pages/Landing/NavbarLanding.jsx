@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { FiMoon, FiSun } from 'react-icons/fi'
-import { useTheme } from '../../contexts/ThemeContext'
 import Logo from '../../assets/Logo.png'
 
 const NavbarLanding = () => {
   const navigate = useNavigate()
-  const { theme, toggleTheme } = useTheme()
   const [user, setUser] = useState(null)
 
   const handleLoginClick = () => {
@@ -56,58 +53,44 @@ const NavbarLanding = () => {
   };
 
   return (
-    <nav className='sticky top-0 z-50 bg-white/80 dark:bg-navy-800/80 backdrop-blur-md border-b border-gray-200 dark:border-navy-700 w-full transition-colors duration-200'>
+    <nav className='sticky top-0 z-50 bg-white/80/80 backdrop-blur-md border-b border-gray-200 w-full transition-colors duration-200'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full'>
         <div className='flex items-center justify-between h-16'>
           <div className='flex items-center cursor-pointer' onClick={() => navigate('/')}>
             <img src={Logo} alt="CGPA Calculator" className='h-8 w-8 sm:h-10 sm:w-10'/>
-            <span className='ml-2 text-lg sm:text-xl font-semibold tracking-tight text-gray-900 dark:text-white'>CGPA Calculator</span>
+            <span className='ml-2 text-lg sm:text-xl font-semibold tracking-tight text-gray-900'>CGPA Calculator</span>
           </div>
 
           <div className='flex items-center gap-4 sm:gap-6 lg:gap-8'>
             <button 
               onClick={() => scrollToSection('home')}
-              className='hidden sm:block text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-200'
+              className='hidden sm:block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200'
             >
               Home
             </button>
             <button 
               onClick={() => scrollToSection('features')}
-              className='hidden sm:block text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-200'
+              className='hidden sm:block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200'
             >
               Features
             </button>
-            <a href="#about" className='hidden md:block text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-200'>
+            <a href="#about" className='hidden md:block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200'>
               About
             </a>
             
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-navy-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-navy-600 transition-colors"
-              aria-label="Toggle theme"
-              title="Toggle theme"
-            >
-              {theme === 'dark' ? (
-                <FiSun className="w-4 h-4" />
-              ) : (
-                <FiMoon className="w-4 h-4" />
-              )}
-            </button>
-            
             {user ? (
-              <button onClick={handleLogout} className='px-4 sm:px-5 py-2 bg-white dark:bg-white text-black dark:text-black text-xs sm:text-sm font-medium rounded-full hover:bg-gray-100 dark:hover:bg-gray-200 hover:ring-2 hover:ring-gray-300 dark:hover:ring-white transition-all duration-300 transform hover:scale-105'>
+              <button onClick={handleLogout} className='px-4 sm:px-5 py-2 bg-white text-black text-xs sm:text-sm font-medium rounded-full hover:bg-gray-100 hover:ring-2 hover:ring-gray-300 transition-all duration-300 transform hover:scale-105'>
                 Logout
               </button>
             ) : (
-              <Link to="/login" className='px-4 sm:px-5 py-2 bg-white dark:bg-white text-black dark:text-black text-xs sm:text-sm font-medium rounded-full hover:bg-gray-100 dark:hover:bg-gray-200 hover:ring-2 hover:ring-gray-300 dark:hover:ring-white transition-all duration-300 transform hover:scale-105'>
+              <Link to="/login" className='px-4 sm:px-5 py-2 bg-white text-black text-xs sm:text-sm font-medium rounded-full hover:bg-gray-100 hover:ring-2 hover:ring-gray-300 transition-all duration-300 transform hover:scale-105'>
                 Login
               </Link>
             )}
           </div>
         </div>
         {needsProfileCompletion && (
-          <div className='bg-yellow-50 dark:bg-yellow-900/20 border-t border-b border-yellow-200 dark:border-yellow-900 text-yellow-900 dark:text-yellow-200 py-3 px-4 sm:px-6 text-center text-sm'>
+          <div className='bg-yellow-50/20 border-t border-b border-yellow-200 text-yellow-900 py-3 px-4 sm:px-6 text-center text-sm'>
             It looks like you signed up with Google. Please <Link to="/complete-profile" className='underline font-medium'>complete your profile</Link> by choosing your college.
           </div>
         )}
