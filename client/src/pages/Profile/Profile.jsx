@@ -1,29 +1,101 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { FiUser, FiMail, FiBook, FiAward, FiEdit2, FiSave, FiX } from 'react-icons/fi';
-import { motion } from 'framer-motion';
+import { FiUser, FiMail, FiBook, FiEdit2, FiSave, FiX, FiLock, FiChevronDown, FiSearch } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Profile = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     username: user?.username || '',
-    email: user?.email || '',
-    bio: user?.bio || 'Computer Science Student | CGPA Enthusiast',
-    university: user?.university || 'University of Technology',
-    graduationYear: user?.graduationYear || '2025'
+    collegeId: user?.collegeId || '',
+    collegeName: user?.college?.name || '',
   });
+  const [colleges, setColleges] = useState([]);
+  const [collegeSearch, setCollegeSearch] = useState('');
+  const [collegeDropOpen, setCollegeDropOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const dropRef = useRef(null);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+  // Fetch colleges list when editing starts
+  useEffect(() => {
+    if (isEditing && colleges.length === 0) {
+      fetch('/api/colleges')
+        .then(r => r.json())
+        .then(d => setColleges(d.colleges || []))
+        .catch(() => {});
+    }
+  }, [isEditing]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e) => {
+      if (dropRef.current && !dropRef.current.contains(e.target)) {
+        setCollegeDropOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const filteredColleges = colleges.filter(c =>
+    c.name.toLowerCase().includes(collegeSearch.toLowerCase())
+  );
+
+  const handleEdit = () => {
+    setFormData({
+      username: user?.username || '',
+      collegeId: user?.collegeId || '',
+      collegeName: user?.college?.name || '',
+    });
+    setCollegeSearch('');
+    setError('');
+    setSuccess('');
+    setIsEditing(true);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Here you would typically call an API to update the user profile
-    console.log('Updated profile:', formData);
+  const handleCancel = () => {
     setIsEditing(false);
+    setError('');
+    setSuccess('');
+    setCollegeDropOpen(false);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const body = { username: formData.username };
+      if (formData.collegeId && formData.collegeId !== user?.collegeId) {
+        body.collegeId = formData.collegeId;
+      }
+
+      const response = await fetch('/api/users/me', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(body),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Failed to update profile.');
+      } else {
+        updateUser(data);
+        setSuccess('Profile updated successfully!');
+        setIsEditing(false);
+      }
+    } catch {
+      setError('Network error. Please try again.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -49,106 +121,157 @@ const Profile = () => {
           <div className="pt-16 pb-8 px-8">
             <div className="flex justify-between items-start mb-6">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{formData.username}</h1>
-                <p className="text-gray-500 dark:text-gray-400">{formData.email}</p>
-              </div>
-              <button
-                onClick={() => setIsEditing(!isEditing)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  isEditing 
-                    ? 'bg-gray-100 dark:bg-navy-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-navy-600'
-                    : 'bg-white dark:bg-white text-black dark:text-black hover:bg-gray-100 dark:hover:bg-gray-200'
-                }`}
-              >
-                {isEditing ? (
-                  <>
-                    <FiX className="w-4 h-4" /> Cancel
-                  </>
-                ) : (
-                  <>
-                    <FiEdit2 className="w-4 h-4" /> Edit Profile
-                  </>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{user?.username}</h1>
+                <p className="text-gray-500 dark:text-gray-400">{user?.email}</p>
+                {user?.college?.name && (
+                  <p className="text-sm text-blue-600 mt-0.5 flex items-center gap-1">
+                    <FiBook className="w-3.5 h-3.5" /> {user.college.name}
+                  </p>
                 )}
-              </button>
+              </div>
+              {!isEditing && (
+                <button
+                  onClick={handleEdit}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700"
+                >
+                  <FiEdit2 className="w-4 h-4" /> Edit Profile
+                </button>
+              )}
             </div>
+
+            {success && !isEditing && (
+              <div className="mb-4 px-4 py-2 bg-green-50 border border-green-200 text-green-700 rounded-lg text-sm">
+                {success}
+              </div>
+            )}
 
             {isEditing ? (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Username */}
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
                     <div className="relative">
                       <FiUser className="absolute left-3 top-3 text-gray-400 dark:text-gray-500" />
                       <input
                         type="text"
-                        name="username"
                         value={formData.username}
-                        onChange={handleChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-navy-700 rounded-lg focus:ring-2 focus:ring-white dark:focus:ring-white focus:border-transparent outline-none transition-all bg-white dark:bg-navy-900 text-gray-900 dark:text-white"
+                        onChange={e => { setFormData(p => ({ ...p, username: e.target.value })); setError(''); }}
+                        className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-navy-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-white focus:border-transparent outline-none transition-all bg-white dark:bg-navy-900 text-gray-900 dark:text-white"
+                        placeholder="Enter username"
                       />
                     </div>
                   </div>
 
+                  {/* Email — read-only */}
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Email</label>
+                    <label className="text-sm font-medium text-gray-700 flex items-center gap-1.5">
+                      Email
+                      <span className="flex items-center gap-0.5 text-xs text-gray-400 font-normal">
+                        <FiLock className="w-3 h-3" /> cannot be changed
+                      </span>
+                    </label>
                     <div className="relative">
-                      <FiMail className="absolute left-3 top-3 text-gray-400" />
+                      <FiMail className="absolute left-3 top-3 text-gray-300" />
                       <input
                         type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                        value={user?.email || ''}
+                        disabled
+                        className="w-full pl-10 pr-4 py-2 border border-gray-100 rounded-lg bg-gray-50 text-gray-400 cursor-not-allowed outline-none"
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-2">
+                  {/* University — searchable dropdown */}
+                  <div className="space-y-2 md:col-span-2" ref={dropRef}>
                     <label className="text-sm font-medium text-gray-700 dark:text-gray-300">University</label>
                     <div className="relative">
-                      <FiBook className="absolute left-3 top-3 text-gray-400 dark:text-gray-500" />
-                      <input
-                        type="text"
-                        name="university"
-                        value={formData.university}
-                        onChange={handleChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-navy-700 rounded-lg focus:ring-2 focus:ring-white dark:focus:ring-white focus:border-transparent outline-none transition-all bg-white dark:bg-navy-900 text-gray-900 dark:text-white"
-                      />
-                    </div>
-                  </div>
+                      <button
+                        type="button"
+                        onClick={() => { setCollegeDropOpen(v => !v); setCollegeSearch(''); }}
+                        className="w-full flex items-center justify-between pl-10 pr-4 py-2 border border-gray-200 dark:border-navy-700 rounded-lg text-left focus:ring-2 focus:ring-blue-500 dark:focus:ring-white focus:border-transparent outline-none transition-all bg-white dark:bg-navy-900 hover:border-gray-300 dark:hover:border-navy-600"
+                      >
+                        <FiBook className="absolute left-3 top-3 text-gray-400 dark:text-gray-500" />
+                        <span className={formData.collegeName ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500'}>
+                          {formData.collegeName || 'Select university…'}
+                        </span>
+                        <FiChevronDown className={`w-4 h-4 text-gray-400 dark:text-gray-500 transition-transform ${collegeDropOpen ? 'rotate-180' : ''}`} />
+                      </button>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Graduation Year</label>
-                    <div className="relative">
-                      <FiAward className="absolute left-3 top-3 text-gray-400 dark:text-gray-500" />
-                      <input
-                        type="text"
-                        name="graduationYear"
-                        value={formData.graduationYear}
-                        onChange={handleChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-navy-700 rounded-lg focus:ring-2 focus:ring-white dark:focus:ring-white focus:border-transparent outline-none transition-all bg-white dark:bg-navy-900 text-gray-900 dark:text-white"
-                      />
-                    </div>
-                  </div>
+                      <AnimatePresence>
+                        {collegeDropOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -4 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -4 }}
+                            transition={{ duration: 0.12 }}
+                            className="absolute z-50 mt-1 w-full bg-white dark:bg-navy-800 border border-gray-200 dark:border-navy-700 rounded-xl shadow-lg overflow-hidden"
+                          >
+                            {/* Search box */}
+                            <div className="p-2 border-b border-gray-100 dark:border-navy-700">
+                              <div className="relative">
+                                <FiSearch className="absolute left-3 top-2.5 text-gray-400 dark:text-gray-500 w-4 h-4" />
+                                <input
+                                  type="text"
+                                  autoFocus
+                                  value={collegeSearch}
+                                  onChange={e => setCollegeSearch(e.target.value)}
+                                  placeholder="Search universities…"
+                                  className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 dark:border-navy-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-white focus:border-transparent outline-none bg-white dark:bg-navy-900 text-gray-900 dark:text-white"
+                                />
+                              </div>
+                            </div>
 
-                  <div className="col-span-full space-y-2">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Bio</label>
-                    <textarea
-                      name="bio"
-                      value={formData.bio}
-                      onChange={handleChange}
-                      rows="3"
-                      className="w-full px-4 py-2 border border-gray-200 dark:border-navy-700 rounded-lg focus:ring-2 focus:ring-white dark:focus:ring-white focus:border-transparent outline-none transition-all resize-none bg-white dark:bg-navy-900 text-gray-900 dark:text-white"
-                    />
+                            {/* List */}
+                            <ul className="max-h-52 overflow-y-auto">
+                              {filteredColleges.length === 0 ? (
+                                <li className="px-4 py-3 text-sm text-gray-400 dark:text-gray-500 text-center">No universities found</li>
+                              ) : (
+                                filteredColleges.map(c => (
+                                  <li key={c.id}>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setFormData(p => ({ ...p, collegeId: c.id, collegeName: c.name }));
+                                        setCollegeDropOpen(false);
+                                        setCollegeSearch('');
+                                      }}
+                                      className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-navy-700 dark:hover:text-blue-400 ${
+                                        formData.collegeId === c.id ? 'bg-blue-50 text-blue-700 font-medium dark:bg-navy-700 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
+                                      }`}
+                                    >
+                                      {c.name}
+                                    </button>
+                                  </li>
+                                ))
+                              )}
+                            </ul>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   </div>
                 </div>
+                {error && (
+                  <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-4 py-2">
+                    {error}
+                  </p>
+                )}
 
-                <div className="flex justify-end pt-4">
+                <div className="flex items-center justify-end gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={handleCancel}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                  >
+                    <FiX className="w-4 h-4" /> Cancel
+                  </button>
                   <button
                     type="submit"
-                    className="flex items-center gap-2 px-6 py-2 bg-white dark:bg-white text-black dark:text-black rounded-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-200 transition-colors shadow-sm hover:shadow-md"
+                    disabled={saving}
+                    className="flex items-center gap-2 px-6 py-2 bg-blue-600 dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-gray-200 transition-colors shadow-sm hover:shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    <FiSave className="w-4 h-4" /> Save Changes
+                    <FiSave className="w-4 h-4" /> {saving ? 'Saving…' : 'Save Changes'}
                   </button>
                 </div>
               </form>
@@ -156,21 +279,18 @@ const Profile = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">About</h3>
-                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{formData.bio}</p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Academic Info</h3>
+                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Account Info</h3>
                     <div className="space-y-3">
                       <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
-                        <FiBook className="w-5 h-5 text-gray-400 dark:text-gray-500" />
-                        <span>{formData.university}</span>
+                        <FiMail className="w-5 h-5 text-gray-400 dark:text-gray-500 shrink-0" />
+                        <span>{user?.email}</span>
                       </div>
-                      <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
-                        <FiAward className="w-5 h-5 text-gray-400 dark:text-gray-500" />
-                        <span>Class of {formData.graduationYear}</span>
-                      </div>
+                      {user?.college?.name && (
+                        <div className="flex items-center gap-3 text-gray-700">
+                          <FiBook className="w-5 h-5 text-gray-400 shrink-0" />
+                          <span>{user.college.name}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -178,22 +298,12 @@ const Profile = () => {
                 <div className="bg-gray-50 dark:bg-navy-900 rounded-xl p-6">
                   <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">Account Statistics</h3>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white dark:bg-navy-800 p-4 rounded-lg shadow-sm border border-transparent dark:border-navy-700">
-                      <div className="text-2xl font-bold text-gray-900 dark:text-white">8</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Semesters</div>
-                    </div>
-                    <div className="bg-white dark:bg-navy-800 p-4 rounded-lg shadow-sm border border-transparent dark:border-navy-700">
-                      <div className="text-2xl font-bold text-gray-900 dark:text-white">3.8</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Current CGPA</div>
-                    </div>
-                    <div className="bg-white dark:bg-navy-800 p-4 rounded-lg shadow-sm border border-transparent dark:border-navy-700">
-                      <div className="text-2xl font-bold text-gray-900 dark:text-white">42</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Courses</div>
-                    </div>
-                    <div className="bg-white dark:bg-navy-800 p-4 rounded-lg shadow-sm border border-transparent dark:border-navy-700">
-                      <div className="text-2xl font-bold text-gray-900 dark:text-white">126</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Credits</div>
-                    </div>
+                    {[['—', 'Semesters'], ['—', 'Current CGPA'], ['—', 'Courses'], ['—', 'Credits']].map(([val, label]) => (
+                      <div key={label} className="bg-white dark:bg-navy-800 p-4 rounded-lg shadow-sm border border-transparent dark:border-navy-700">
+                        <div className="text-2xl font-bold text-gray-900 dark:text-white">{val}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{label}</div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
