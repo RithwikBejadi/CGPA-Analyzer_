@@ -32,7 +32,7 @@ const Analytics = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-navy-900 transition-colors duration-200">
+    <div className="min-h-screen bg-white transition-colors duration-200">
       <DashboardHero 
         title="Performance Analytics" 
         subtitle="Comprehensive breakdown of your academic performance across all semesters."
@@ -47,7 +47,7 @@ const Analytics = () => {
         
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black dark:border-white"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
           </div>
         ) : (
           <>

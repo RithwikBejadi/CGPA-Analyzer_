@@ -160,12 +160,12 @@ const ScoreTracker = () => {
     <div className="space-y-6">
       {/* Alert Messages */}
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg">
+        <div className="bg-red-50/20 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           {error}
         </div>
       )}
       {success && (
-        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 px-4 py-3 rounded-lg">
+        <div className="bg-green-50/20 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
           {success}
         </div>
       )}
@@ -173,7 +173,7 @@ const ScoreTracker = () => {
       {/* Selection */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Select Semester
           </label>
           <select
@@ -183,7 +183,7 @@ const ScoreTracker = () => {
               setSelectedSubject('');
               setSubjectAssessment(null);
             }}
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-navy-700 dark:text-white"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Choose a semester</option>
             {semesters.map((sem) => (
@@ -195,14 +195,14 @@ const ScoreTracker = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Select Subject
           </label>
           <select
             value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
             disabled={!selectedSemester}
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-navy-700 dark:text-white disabled:opacity-50"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
           >
             <option value="">Choose a subject</option>
             {subjects.map((subj) => (
@@ -216,15 +216,15 @@ const ScoreTracker = () => {
 
       {/* Link Template (if no assessment exists) */}
       {selectedSubject && !subjectAssessment && (
-        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-          <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+        <div className="border border-gray-200 rounded-lg p-4">
+          <h3 className="font-semibold text-gray-900 mb-3">
             Link Assessment Template
           </h3>
           <div className="flex gap-3">
             <select
               value={selectedTemplate}
               onChange={(e) => setSelectedTemplate(e.target.value)}
-              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-navy-700 dark:text-white"
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Choose a template</option>
               {templates.map((template) => (
@@ -249,14 +249,14 @@ const ScoreTracker = () => {
         <div>
           <div className="mb-4">
             <div className="flex justify-between items-center mb-2">
-              <h3 className="font-semibold text-gray-900 dark:text-white">
+              <h3 className="font-semibold text-gray-900">
                 {subjectAssessment.template.name}
               </h3>
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-gray-600">
                 Progress: {calculateProgress().toFixed(0)}%
               </span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-200 rounded-full h-2">
               <div
                 className="bg-blue-600 h-2 rounded-full transition-all"
                 style={{ width: `${calculateProgress()}%` }}
@@ -272,19 +272,19 @@ const ScoreTracker = () => {
               return (
                 <div
                   key={component.id}
-                  className="border border-gray-200 dark:border-gray-700 rounded-lg p-4"
+                  className="border border-gray-200 rounded-lg p-4"
                 >
                   <div className="flex justify-between items-start mb-3">
                     <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white">
+                      <h4 className="font-medium text-gray-900">
                         {component.name}
                       </h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-gray-600">
                         Weightage: {component.weightage}% • Max Score: {component.maxScore}
                       </p>
                     </div>
                     {existingScore && (
-                      <span className="text-green-600 dark:text-green-400 text-sm">
+                      <span className="text-green-600 text-sm">
                         ✓ Saved
                       </span>
                     )}
@@ -292,7 +292,7 @@ const ScoreTracker = () => {
 
                   <div className="flex gap-3 items-end">
                     <div className="flex-1">
-                      <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                      <label className="block text-xs text-gray-600 mb-1">
                         Score Obtained
                       </label>
                       <input
@@ -302,11 +302,11 @@ const ScoreTracker = () => {
                         placeholder="e.g., 80"
                         step="0.01"
                         min="0"
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-navy-700 dark:text-white"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                     <div className="flex-1">
-                      <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                      <label className="block text-xs text-gray-600 mb-1">
                         Out of
                       </label>
                       <input
@@ -316,7 +316,7 @@ const ScoreTracker = () => {
                         placeholder="e.g., 100"
                         step="0.01"
                         min="0"
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-navy-700 dark:text-white"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                     <button
@@ -329,7 +329,7 @@ const ScoreTracker = () => {
                   </div>
 
                   {existingScore && (
-                    <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    <div className="mt-2 text-sm text-gray-600">
                       Current: {existingScore.scoreObtained}/{existingScore.maxScore} 
                       ({((existingScore.scoreObtained / existingScore.maxScore) * 100).toFixed(2)}%)
                     </div>
@@ -341,11 +341,11 @@ const ScoreTracker = () => {
 
           {/* Current Prediction */}
           {subjectAssessment.predictedGrade && (
-            <div className="mt-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-              <h4 className="font-semibold text-blue-900 dark:text-blue-300 mb-2">
+            <div className="mt-6 bg-blue-50/20 border border-blue-200 rounded-lg p-4">
+              <h4 className="font-semibold text-blue-900 mb-2">
                 Current Prediction
               </h4>
-              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              <div className="text-2xl font-bold text-blue-600">
                 {subjectAssessment.predictedGrade} ({subjectAssessment.predictedGradePoint} points)
               </div>
             </div>

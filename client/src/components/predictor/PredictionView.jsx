@@ -71,20 +71,20 @@ const PredictionView = () => {
     <div className="space-y-6">
       {/* Alert Messages */}
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg">
+        <div className="bg-red-50/20 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           {error}
         </div>
       )}
 
       {/* Semester Selection */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           Select Semester
         </label>
         <select
           value={selectedSemester}
           onChange={(e) => setSelectedSemester(e.target.value)}
-          className="w-full md:w-1/2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-navy-700 dark:text-white"
+          className="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
         >
           <option value="">Choose a semester</option>
           {semesters.map((sem) => (
@@ -97,7 +97,7 @@ const PredictionView = () => {
 
       {/* Loading State */}
       {loading && (
-        <div className="text-center py-8 text-gray-600 dark:text-gray-400">
+        <div className="text-center py-8 text-gray-600">
           Loading predictions...
         </div>
       )}
@@ -115,12 +115,12 @@ const PredictionView = () => {
 
       {/* No Predictions */}
       {!loading && selectedSemester && predictions.length === 0 && (
-        <div className="text-center py-12 bg-gray-50 dark:bg-navy-700 rounded-lg">
-          <div className="text-gray-400 dark:text-gray-500 text-5xl mb-4">📊</div>
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+        <div className="text-center py-12 bg-gray-50 rounded-lg">
+          <div className="text-gray-400 text-5xl mb-4">📊</div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
             No Predictions Yet
           </h3>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-600">
             Link templates to subjects and add scores to see predictions
           </p>
         </div>
@@ -129,7 +129,7 @@ const PredictionView = () => {
       {/* Subject Predictions */}
       {!loading && predictions.length > 0 && (
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h3 className="text-xl font-semibold text-gray-900">
             Subject Predictions
           </h3>
 
@@ -140,24 +140,24 @@ const PredictionView = () => {
             return (
               <div
                 key={prediction.id}
-                className="border border-gray-200 dark:border-gray-700 rounded-lg p-5 hover:shadow-md transition-shadow"
+                className="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow"
               >
                 {/* Subject Header */}
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    <h4 className="text-lg font-semibold text-gray-900">
                       {prediction.subject.name}
                     </h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-gray-600">
                       Credits: {prediction.subject.credits} • Template: {prediction.template.name}
                     </p>
                   </div>
                   {prediction.predictedGrade && (
                     <div className="text-right">
-                      <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                      <div className="text-2xl font-bold text-blue-600">
                         {prediction.predictedGrade}
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-sm text-gray-600">
                         {prediction.predictedGradePoint} points
                       </div>
                     </div>
@@ -166,11 +166,11 @@ const PredictionView = () => {
 
                 {/* Progress */}
                 <div className="mb-4">
-                  <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-1">
+                  <div className="flex justify-between text-sm text-gray-600 mb-1">
                     <span>Components Completed</span>
                     <span>{progress.completed}/{progress.total}</span>
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
                       className="bg-green-500 h-2 rounded-full transition-all"
                       style={{ width: `${progress.percentage}%` }}
@@ -189,14 +189,14 @@ const PredictionView = () => {
                     return (
                       <div
                         key={component.id}
-                        className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0"
+                        className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0"
                       >
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-gray-900 dark:text-white">
+                            <span className="text-sm font-medium text-gray-900">
                               {component.name}
                             </span>
-                            <span className="text-xs text-gray-500 dark:text-gray-400">
+                            <span className="text-xs text-gray-500">
                               ({component.weightage}%)
                             </span>
                           </div>
@@ -204,15 +204,15 @@ const PredictionView = () => {
                         <div className="text-right">
                           {score ? (
                             <>
-                              <div className="text-sm font-medium text-gray-900 dark:text-white">
+                              <div className="text-sm font-medium text-gray-900">
                                 {score.scoreObtained}/{score.maxScore}
                               </div>
-                              <div className="text-xs text-gray-600 dark:text-gray-400">
+                              <div className="text-xs text-gray-600">
                                 {percentage.toFixed(1)}%
                               </div>
                             </>
                           ) : (
-                            <span className="text-sm text-gray-400 dark:text-gray-500">
+                            <span className="text-sm text-gray-400">
                               Not entered
                             </span>
                           )}
@@ -223,14 +223,14 @@ const PredictionView = () => {
                 </div>
 
                 {/* Weighted Score Summary */}
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="mt-4 pt-4 border-t border-gray-200">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600 dark:text-gray-400">
+                    <span className="text-gray-600">
                       Current Weighted Score:
                     </span>
-                    <span className="font-semibold text-gray-900 dark:text-white">
+                    <span className="font-semibold text-gray-900">
                       {totalWeighted.toFixed(2)}% 
-                      <span className="text-gray-500 dark:text-gray-400 font-normal ml-1">
+                      <span className="text-gray-500 font-normal ml-1">
                         ({totalWeightageUsed}% weightage used)
                       </span>
                     </span>

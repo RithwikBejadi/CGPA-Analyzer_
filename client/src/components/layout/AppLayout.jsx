@@ -10,7 +10,7 @@ const AppLayout = ({ children }) => {
   useKeyboardShortcut('k', () => setCommandOpen(true), { meta: true });
 
   return (
-    <div className="min-h-screen bg-white dark:bg-navy-900 transition-colors duration-200">
+    <div className="min-h-screen bg-white transition-colors duration-200">
       <Navbar onCommandOpen={() => setCommandOpen(true)} />
       <main className="min-h-[calc(100vh-64px)]">
         {children}

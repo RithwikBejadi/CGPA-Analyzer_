@@ -105,12 +105,12 @@ const Profile = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="bg-white dark:bg-navy-800 rounded-2xl shadow-sm border border-gray-100 dark:border-navy-700 overflow-hidden transition-colors duration-200">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-colors duration-200">
           {/* Header / Cover */}
           <div className="h-32 bg-gradient-to-r from-blue-600 to-indigo-600 relative">
             <div className="absolute -bottom-12 left-8">
-              <div className="w-24 h-24 bg-white dark:bg-navy-800 rounded-2xl p-1 shadow-lg">
-                <div className="w-full h-full bg-white dark:bg-white rounded-xl flex items-center justify-center text-black dark:text-black text-3xl font-bold border-2 border-gray-200 dark:border-white">
+              <div className="w-24 h-24 bg-white rounded-2xl p-1 shadow-lg">
+                <div className="w-full h-full bg-white rounded-xl flex items-center justify-center text-black text-3xl font-bold border-2 border-gray-200">
                   {user?.username?.slice(0, 2).toUpperCase() || 'US'}
                 </div>
               </div>
@@ -121,8 +121,8 @@ const Profile = () => {
           <div className="pt-16 pb-8 px-8">
             <div className="flex justify-between items-start mb-6">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{user?.username}</h1>
-                <p className="text-gray-500 dark:text-gray-400">{user?.email}</p>
+                <h1 className="text-2xl font-bold text-gray-900">{user?.username}</h1>
+                <p className="text-gray-500">{user?.email}</p>
                 {user?.college?.name && (
                   <p className="text-sm text-blue-600 mt-0.5 flex items-center gap-1">
                     <FiBook className="w-3.5 h-3.5" /> {user.college.name}
@@ -150,14 +150,14 @@ const Profile = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Username */}
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
+                    <label className="text-sm font-medium text-gray-700">Username</label>
                     <div className="relative">
-                      <FiUser className="absolute left-3 top-3 text-gray-400 dark:text-gray-500" />
+                      <FiUser className="absolute left-3 top-3 text-gray-400" />
                       <input
                         type="text"
                         value={formData.username}
                         onChange={e => { setFormData(p => ({ ...p, username: e.target.value })); setError(''); }}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-navy-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-white focus:border-transparent outline-none transition-all bg-white dark:bg-navy-900 text-gray-900 dark:text-white"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all bg-white text-gray-900"
                         placeholder="Enter username"
                       />
                     </div>
@@ -184,18 +184,18 @@ const Profile = () => {
 
                   {/* University — searchable dropdown */}
                   <div className="space-y-2 md:col-span-2" ref={dropRef}>
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">University</label>
+                    <label className="text-sm font-medium text-gray-700">University</label>
                     <div className="relative">
                       <button
                         type="button"
                         onClick={() => { setCollegeDropOpen(v => !v); setCollegeSearch(''); }}
-                        className="w-full flex items-center justify-between pl-10 pr-4 py-2 border border-gray-200 dark:border-navy-700 rounded-lg text-left focus:ring-2 focus:ring-blue-500 dark:focus:ring-white focus:border-transparent outline-none transition-all bg-white dark:bg-navy-900 hover:border-gray-300 dark:hover:border-navy-600"
+                        className="w-full flex items-center justify-between pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-left focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all bg-white hover:border-gray-300"
                       >
-                        <FiBook className="absolute left-3 top-3 text-gray-400 dark:text-gray-500" />
-                        <span className={formData.collegeName ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500'}>
+                        <FiBook className="absolute left-3 top-3 text-gray-400" />
+                        <span className={formData.collegeName ? 'text-gray-900' : 'text-gray-400'}>
                           {formData.collegeName || 'Select university…'}
                         </span>
-                        <FiChevronDown className={`w-4 h-4 text-gray-400 dark:text-gray-500 transition-transform ${collegeDropOpen ? 'rotate-180' : ''}`} />
+                        <FiChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${collegeDropOpen ? 'rotate-180' : ''}`} />
                       </button>
 
                       <AnimatePresence>
@@ -205,19 +205,19 @@ const Profile = () => {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -4 }}
                             transition={{ duration: 0.12 }}
-                            className="absolute z-50 mt-1 w-full bg-white dark:bg-navy-800 border border-gray-200 dark:border-navy-700 rounded-xl shadow-lg overflow-hidden"
+                            className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden"
                           >
                             {/* Search box */}
-                            <div className="p-2 border-b border-gray-100 dark:border-navy-700">
+                            <div className="p-2 border-b border-gray-100">
                               <div className="relative">
-                                <FiSearch className="absolute left-3 top-2.5 text-gray-400 dark:text-gray-500 w-4 h-4" />
+                                <FiSearch className="absolute left-3 top-2.5 text-gray-400 w-4 h-4" />
                                 <input
                                   type="text"
                                   autoFocus
                                   value={collegeSearch}
                                   onChange={e => setCollegeSearch(e.target.value)}
                                   placeholder="Search universities…"
-                                  className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 dark:border-navy-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-white focus:border-transparent outline-none bg-white dark:bg-navy-900 text-gray-900 dark:text-white"
+                                  className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white text-gray-900"
                                 />
                               </div>
                             </div>
@@ -225,7 +225,7 @@ const Profile = () => {
                             {/* List */}
                             <ul className="max-h-52 overflow-y-auto">
                               {filteredColleges.length === 0 ? (
-                                <li className="px-4 py-3 text-sm text-gray-400 dark:text-gray-500 text-center">No universities found</li>
+                                <li className="px-4 py-3 text-sm text-gray-400 text-center">No universities found</li>
                               ) : (
                                 filteredColleges.map(c => (
                                   <li key={c.id}>
@@ -236,8 +236,8 @@ const Profile = () => {
                                         setCollegeDropOpen(false);
                                         setCollegeSearch('');
                                       }}
-                                      className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-navy-700 dark:hover:text-blue-400 ${
-                                        formData.collegeId === c.id ? 'bg-blue-50 text-blue-700 font-medium dark:bg-navy-700 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
+                                      className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-blue-50 hover:text-blue-700 ${
+                                        formData.collegeId === c.id ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700'
                                       }`}
                                     >
                                       {c.name}
@@ -269,7 +269,7 @@ const Profile = () => {
                   <button
                     type="submit"
                     disabled={saving}
-                    className="flex items-center gap-2 px-6 py-2 bg-blue-600 dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-gray-200 transition-colors shadow-sm hover:shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     <FiSave className="w-4 h-4" /> {saving ? 'Saving…' : 'Save Changes'}
                   </button>
@@ -279,10 +279,10 @@ const Profile = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Account Info</h3>
+                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">Account Info</h3>
                     <div className="space-y-3">
-                      <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
-                        <FiMail className="w-5 h-5 text-gray-400 dark:text-gray-500 shrink-0" />
+                      <div className="flex items-center gap-3 text-gray-700">
+                        <FiMail className="w-5 h-5 text-gray-400 shrink-0" />
                         <span>{user?.email}</span>
                       </div>
                       {user?.college?.name && (
@@ -295,13 +295,13 @@ const Profile = () => {
                   </div>
                 </div>
 
-                <div className="bg-gray-50 dark:bg-navy-900 rounded-xl p-6">
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">Account Statistics</h3>
+                <div className="bg-gray-50 rounded-xl p-6">
+                  <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Account Statistics</h3>
                   <div className="grid grid-cols-2 gap-4">
                     {[['—', 'Semesters'], ['—', 'Current CGPA'], ['—', 'Courses'], ['—', 'Credits']].map(([val, label]) => (
-                      <div key={label} className="bg-white dark:bg-navy-800 p-4 rounded-lg shadow-sm border border-transparent dark:border-navy-700">
-                        <div className="text-2xl font-bold text-gray-900 dark:text-white">{val}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{label}</div>
+                      <div key={label} className="bg-white p-4 rounded-lg shadow-sm border border-transparent">
+                        <div className="text-2xl font-bold text-gray-900">{val}</div>
+                        <div className="text-xs text-gray-500 mt-1">{label}</div>
                       </div>
                     ))}
                   </div>

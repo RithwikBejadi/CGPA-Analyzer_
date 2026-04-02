@@ -18,30 +18,30 @@ const Body1 = () => {
   }
 
   return (
-    <div className='bg-white dark:bg-navy-900 w-full transition-colors duration-200'>
-      <section id='home' className='relative overflow-hidden bg-gradient-to-b from-gray-50 to-white dark:from-navy-900 dark:to-navy-900 w-full'>
+    <div className='bg-white w-full transition-colors duration-200'>
+      <section id='home' className='relative overflow-hidden bg-gradient-to-b from-gray-50 to-white w-full'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32 text-center w-full'>
           <div className='animate-fade-in'>
-            <h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-white leading-tight'>
+            <h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 leading-tight'>
               Track Your CGPA with
             </h1>
-            <h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 dark:from-white dark:via-gray-300 dark:to-white bg-clip-text text-transparent leading-tight mt-2'>
+            <h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent leading-tight mt-2'>
               Precision & Ease
             </h1>
-            <p className='mt-6 sm:mt-8 text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed px-4'>
+            <p className='mt-6 sm:mt-8 text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed px-4'>
               A modern CGPA calculator designed for students. Track your grades, visualize your progress, and stay organized throughout your academic journey.
             </p>
             
             <div className='mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 px-4'>
               <button 
                 onClick={handleGetStarted}
-                className='w-full sm:w-auto px-8 py-4 bg-white dark:bg-white text-black dark:text-black text-base font-medium rounded-full hover:bg-gray-100 dark:hover:bg-gray-200 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'
+                className='w-full sm:w-auto px-8 py-4 bg-white text-black text-base font-medium rounded-full hover:bg-gray-100:bg-gray-200 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'
               >
                 Get Started Free →
               </button>
               <button 
                 onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })}
-                className='w-full sm:w-auto px-8 py-4 bg-white dark:bg-navy-800 text-gray-900 dark:text-white text-base font-medium rounded-full border-2 border-gray-200 dark:border-navy-700 hover:border-gray-900 dark:hover:border-white hover:scale-105 transition-all duration-300'
+                className='w-full sm:w-auto px-8 py-4 bg-white text-gray-900 text-base font-medium rounded-full border-2 border-gray-200 hover:border-gray-900:border-white hover:scale-105 transition-all duration-300'
               >
                 Learn More
               </button>
@@ -51,52 +51,52 @@ const Body1 = () => {
       </section>
 
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full'>
-        <div className='border-t border-gray-200 dark:border-navy-700'></div>
+        <div className='border-t border-gray-200'></div>
       </div>
 
       <section id='features' className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 w-full'>
         <div className='text-center mb-12 sm:mb-16'>
-          <h2 className='text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-white px-4'>
+          <h2 className='text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 px-4'>
             Why use our CGPA Calculator?
           </h2>
-          <p className='mt-4 sm:mt-6 text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto px-4'>
+          <p className='mt-4 sm:mt-6 text-base sm:text-lg text-gray-600 max-w-3xl mx-auto px-4'>
             Our tool is designed to provide you with a seamless and insightful experience, helping you stay on top of your academic goals.
           </p>
         </div>
 
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-12 sm:mt-16 w-full'>
           
-          <div className='group bg-gray-50 dark:bg-navy-800 p-8 rounded-2xl border border-gray-200 dark:border-navy-700 hover:border-gray-300 dark:hover:border-navy-600 hover:shadow-xl hover:scale-105 transition-all duration-300'>
-            <div className='bg-white dark:bg-white w-16 h-16 rounded-xl flex items-center justify-center shadow-sm mb-6 border-2 border-transparent dark:border-white'>
+          <div className='group bg-gray-50 p-8 rounded-2xl border border-gray-200 hover:border-gray-300:border-navy-600 hover:shadow-xl hover:scale-105 transition-all duration-300'>
+            <div className='bg-white w-16 h-16 rounded-xl flex items-center justify-center shadow-sm mb-6 border-2 border-transparent'>
               <img src={CalculatorLogo} alt="Calculator Icon" className='w-8 h-8'/>
             </div>
-            <h3 className='text-xl font-semibold text-gray-900 dark:text-white mb-3'>
+            <h3 className='text-xl font-semibold text-gray-900 mb-3'>
               Instant Calculation
             </h3>
-            <p className='text-gray-600 dark:text-gray-400 leading-relaxed'>
+            <p className='text-gray-600 leading-relaxed'>
               Get your CGPA calculated in real-time as you input your grades and credits.
             </p>
           </div>
 
           
-          <div className='group bg-gray-50 dark:bg-navy-800 p-8 rounded-2xl border border-gray-200 dark:border-navy-700 hover:border-gray-300 dark:hover:border-navy-600 hover:shadow-xl hover:scale-105 transition-all duration-300'>
-            <div className='bg-white dark:bg-white w-16 h-16 rounded-xl flex items-center justify-center shadow-sm mb-6 border-2 border-transparent dark:border-white'>
+          <div className='group bg-gray-50 p-8 rounded-2xl border border-gray-200 hover:border-gray-300:border-navy-600 hover:shadow-xl hover:scale-105 transition-all duration-300'>
+            <div className='bg-white w-16 h-16 rounded-xl flex items-center justify-center shadow-sm mb-6 border-2 border-transparent'>
               <img src={BarLogo} alt="Chart Icon" className='w-10 h-10'/>
             </div>
-            <h3 className='text-xl font-semibold text-gray-900 dark:text-white mb-3'>
+            <h3 className='text-xl font-semibold text-gray-900 mb-3'>
               Progress Charts
             </h3>
-            <p className='text-gray-600 dark:text-gray-400 leading-relaxed'>
+            <p className='text-gray-600 leading-relaxed'>
               Visualize your academic performance over time with intuitive and clear charts.
             </p>
           </div>
 
           
-          <div className='group bg-gray-50 dark:bg-navy-800 p-8 rounded-2xl border border-gray-200 dark:border-navy-700 hover:border-gray-300 dark:hover:border-navy-600 hover:shadow-xl hover:scale-105 transition-all duration-300'>
-            <div className='bg-white dark:bg-white w-16 h-16 rounded-xl flex items-center justify-center shadow-sm mb-6 border-2 border-transparent dark:border-white'>
+          <div className='group bg-gray-50 p-8 rounded-2xl border border-gray-200 hover:border-gray-300:border-navy-600 hover:shadow-xl hover:scale-105 transition-all duration-300'>
+            <div className='bg-white w-16 h-16 rounded-xl flex items-center justify-center shadow-sm mb-6 border-2 border-transparent'>
               <img src={DownloadLogo} alt="Download Icon" className='w-8 h-8'/>
             </div>
-            <h3 className='text-xl font-semibold text-gray-900 dark:text-white mb-3'>
+            <h3 className='text-xl font-semibold text-gray-900 mb-3'>
               Export Results
             </h3>
             <p className='text-gray-600 leading-relaxed'>

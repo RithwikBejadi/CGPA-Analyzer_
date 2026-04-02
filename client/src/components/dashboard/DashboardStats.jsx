@@ -14,25 +14,25 @@ const DashboardStats = ({ loading, cgpa, stats }) => {
       {loading ? (
         <SkeletonCard />
       ) : (
-        <Card className="p-8 bg-white dark:bg-navy-900 border-gray-100 dark:border-navy-800/50 hover:shadow-lg dark:hover:shadow-2xl dark:hover:shadow-black/30 transition-all duration-200">
+        <Card className="p-8 bg-white border-gray-100/50 hover:shadow-lg:shadow-2xl:shadow-black/30 transition-all duration-200">
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Current CGPA</p>
-              <h2 className="text-5xl font-semibold tracking-tight text-gray-900 dark:text-white mb-4">
+              <p className="text-sm font-medium text-gray-600 mb-1">Current CGPA</p>
+              <h2 className="text-5xl font-semibold tracking-tight text-gray-900 mb-4">
                 {cgpa || '—'}
               </h2>
               <div className="flex items-center gap-6 text-sm">
                 <div className="flex items-center gap-2">
-                  <FiBook className="w-4 h-4 text-gray-400 dark:text-gray-500" />
-                  <span className="text-gray-600 dark:text-gray-400">{stats.totalSemesters} semesters</span>
+                  <FiBook className="w-4 h-4 text-gray-400" />
+                  <span className="text-gray-600">{stats.totalSemesters} semesters</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <FiAward className="w-4 h-4 text-gray-400 dark:text-gray-500" />
-                  <span className="text-gray-600 dark:text-gray-400">{stats.totalSubjects} subjects</span>
+                  <FiAward className="w-4 h-4 text-gray-400" />
+                  <span className="text-gray-600">{stats.totalSubjects} subjects</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <FiTrendingUp className="w-4 h-4 text-gray-400 dark:text-gray-500" />
-                  <span className="text-gray-600 dark:text-gray-400">{stats.totalCredits} credits</span>
+                  <FiTrendingUp className="w-4 h-4 text-gray-400" />
+                  <span className="text-gray-600">{stats.totalCredits} credits</span>
                 </div>
               </div>
             </div>
