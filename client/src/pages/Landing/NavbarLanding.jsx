@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { FiMoon, FiSun } from 'react-icons/fi'
-import { useTheme } from '../../contexts/ThemeContext'
 import Logo from '../../assets/Logo.png'
 
 const NavbarLanding = () => {
   const navigate = useNavigate()
-  const { theme, toggleTheme } = useTheme()
   const [user, setUser] = useState(null)
 
   const handleLoginClick = () => {
@@ -67,40 +64,26 @@ const NavbarLanding = () => {
           <div className='flex items-center gap-4 sm:gap-6 lg:gap-8'>
             <button 
               onClick={() => scrollToSection('home')}
-              className='hidden sm:block text-sm font-medium text-gray-600 hover:text-gray-900:text-white transition-colors duration-200'
+              className='hidden sm:block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200'
             >
               Home
             </button>
             <button 
               onClick={() => scrollToSection('features')}
-              className='hidden sm:block text-sm font-medium text-gray-600 hover:text-gray-900:text-white transition-colors duration-200'
+              className='hidden sm:block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200'
             >
               Features
             </button>
-            <a href="#about" className='hidden md:block text-sm font-medium text-gray-600 hover:text-gray-900:text-white transition-colors duration-200'>
+            <a href="#about" className='hidden md:block text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200'>
               About
             </a>
             
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200:bg-navy-600 transition-colors"
-              aria-label="Toggle theme"
-              title="Toggle theme"
-            >
-              {theme === 'dark' ? (
-                <FiSun className="w-4 h-4" />
-              ) : (
-                <FiMoon className="w-4 h-4" />
-              )}
-            </button>
-            
             {user ? (
-              <button onClick={handleLogout} className='px-4 sm:px-5 py-2 bg-white text-black text-xs sm:text-sm font-medium rounded-full hover:bg-gray-100:bg-gray-200 hover:ring-2 hover:ring-gray-300:ring-white transition-all duration-300 transform hover:scale-105'>
+              <button onClick={handleLogout} className='px-4 sm:px-5 py-2 bg-white text-black text-xs sm:text-sm font-medium rounded-full hover:bg-gray-100 hover:ring-2 hover:ring-gray-300 transition-all duration-300 transform hover:scale-105'>
                 Logout
               </button>
             ) : (
-              <Link to="/login" className='px-4 sm:px-5 py-2 bg-white text-black text-xs sm:text-sm font-medium rounded-full hover:bg-gray-100:bg-gray-200 hover:ring-2 hover:ring-gray-300:ring-white transition-all duration-300 transform hover:scale-105'>
+              <Link to="/login" className='px-4 sm:px-5 py-2 bg-white text-black text-xs sm:text-sm font-medium rounded-full hover:bg-gray-100 hover:ring-2 hover:ring-gray-300 transition-all duration-300 transform hover:scale-105'>
                 Login
               </Link>
             )}
